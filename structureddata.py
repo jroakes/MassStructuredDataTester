@@ -29,7 +29,7 @@ for line in iter(urls):
 	j_obj = json.loads(data)
 	total = 0
 	for i in range(len(j_obj['tripleGroups'])):
-		total += int(j_obj['tripleGroups'][(i-1)--1]['numErrors'])
+		total += int(j_obj['tripleGroups'][i]['numErrors'])
 	f.writerow([j_obj['url'], total])
 	print("Checked URL: " + line)
 	print("Waiting " + str(seconds) + " seconds until checking next URL.\n")
