@@ -27,7 +27,6 @@ for line in iter(urls):
 	values = {'url' : line}
 	if usingproxy == "Yes":
 		data = requests.post(google, data=values, headers=headers, proxies=proxies, stream=True)
-		print(data.raw._fp.fp._sock.getpeername())
 	elif usingproxy == "No":
 		data = requests.post(google, data=values, headers=headers)
 	else:
