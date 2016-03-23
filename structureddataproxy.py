@@ -3,11 +3,19 @@ import json
 import csv
 import time
 
+# To Do: 
+# - Rotating proxy support
+
 urlinput = input('Enter input text file: ')
 urls = open(urlinput, "r")
 outputcsv = input('Enter a filename (minus file extension): ') + '.csv'
 seconds = input('Enter number of seconds to wait between URL checks: ')
+usingproxy = input("Using a proxy? Enter 'Yes' or 'No': ")
 
+if usingproxy == "Yes":
+	proxyurl = input('Enter a proxy URL (scheme, url, and port): ')
+	proxies = { 'https': proxyurl }
+	
 google = 'https://structured-data-testing-tool.developers.google.com/sdtt/web/validate'
 user_agent = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
 headers = { 'User-Agent' : user_agent, 'Referer' : 'https://structured-data-testing-tool.developers.google.com/sdtt/web?', 'Origin' : 'https://structured-data-testing-tool.developers.google.com' }
@@ -17,7 +25,14 @@ f.writerow(["URL", "Number of Errors"])
 
 for line in iter(urls):
 	values = {'url' : line}
-	data = requests.post(google, data=values, headers=headers)
+	if usingproxy == "Yes":
+		data = requests.post(google, data=values, headers=headers, proxies=proxies, stream=True)
+		print(data.raw._fp.fp._sock.getpeername())
+	elif usingproxy == "No":
+		data = requests.post(google, data=values, headers=headers)
+	else:
+		print("You didn't answer 'Yes' or 'No'. Check case. Defaulting to 'No'.")
+		data = requests.post(google, data=values, headers=headers)
 	data.encoding = 'utf-8'
 	respData = data.text
 	data = respData[5:]
