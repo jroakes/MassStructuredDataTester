@@ -1,5 +1,4 @@
-import urllib.parse
-import urllib.request
+import requests
 import json
 import csv
 import time
@@ -20,12 +19,10 @@ f.writerow(["URL", "Number of Errors"])
 
 for line in iter(urls):
 	values = {'url' : line}
-	data = urllib.parse.urlencode(values)
-	data = data.encode('utf-8')
-	req = urllib.request.Request(google, data, headers)
-	resp = urllib.request.urlopen(req)
-	respData = resp.read()
-	data = respData[5:].decode('utf-8')
+	data = requests.post(google, data=values, headers=headers)
+	data.encoding = 'utf-8'
+	respData = data.text
+	data = respData[5:]
 	j_obj = json.loads(data)
 	total = 0
 	for i in range(len(j_obj['tripleGroups'])):
