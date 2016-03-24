@@ -13,8 +13,9 @@ seconds = input('Enter number of seconds to wait between URL checks: ')
 usingproxy = input("Using a proxy? Enter 'Yes' or 'No': ")
 
 if usingproxy == "Yes":
+	httporhttps = input('Is the proxy http or https?: ')
 	proxyurl = input('Enter a proxy URL (scheme, url, and port): ')
-	proxies = { 'https': proxyurl }
+	proxies = { httporhttps : proxyurl }
 	
 google = 'https://structured-data-testing-tool.developers.google.com/sdtt/web/validate'
 user_agent = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36'
